@@ -11,6 +11,7 @@ export const AccountProvider = {
     const schema = AccountSchema;
 
     schema.pre<AccountDocument>('save', function (next: any) {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
       const user = this;
 
       if (user.password) {
