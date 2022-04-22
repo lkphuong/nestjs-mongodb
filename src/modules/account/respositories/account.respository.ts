@@ -20,7 +20,7 @@ export class AccountRepository {
   }
 
   async findByID(id: string): Promise<Account> {
-    return await this.findByID(id);
+    return await this.accountModel.findById(id);
   }
 
   async login(loginDto: LoginDto): Promise<any> {
