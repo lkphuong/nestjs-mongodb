@@ -7,9 +7,6 @@ const { ObjectId } = Types;
 
 @Schema()
 export class Account {
-  @Prop({ required: true })
-  _id: Types.ObjectId;
-
   @Prop({ unique: true, required: true })
   username: string;
 

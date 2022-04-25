@@ -8,6 +8,7 @@ import {
   BadRequestException,
   NotFoundException,
 } from 'src/common/exceptions/index.exception';
+import { CreateAccountDto } from '../dto';
 @Injectable()
 export class AccountRepository {
   constructor(
@@ -27,9 +28,7 @@ export class AccountRepository {
     const account = await this.accountModel
       .findOne({ username: loginDto.username })
       .select('+password');
-
     if (!account) throw new NotFoundException(1001, 'Người dùng không tồn tại');
-
     const isMatch = compareSync(loginDto.password, account.password);
 
     if (!isMatch)
@@ -38,5 +37,9 @@ export class AccountRepository {
         'Username hoặc mật khẩu không chính xác',
       );
     return account;
+  }
+
+  async createAccount(createAccountDto: CreateAccountDto): Promise<any> {
+    return this.accountModel.create(createAccountDto);
   }
 }
