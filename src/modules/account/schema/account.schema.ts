@@ -12,6 +12,12 @@ export class Account {
 
   @Prop({ required: true, minlength: 6, select: false })
   password: string;
+
+  @Prop({ default: 'user' })
+  role: string;
+
+  @Prop({ default: null })
+  rf_token: string;
 }
 
 export const AccountSchema = SchemaFactory.createForClass(Account);

@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt_auth.guard';
 import { LocalAuthGuard } from 'src/common/guards/local_auth.guard';
 import { Public } from 'src/common/decorators/auth/public.decoration';
+import { ResponseHelper } from 'src/common/helpers/response.helper';
 
 @Controller()
 export class AuthController {
@@ -12,7 +13,8 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req: any) {
-    return this.authService.login(req.user);
+    const token = await this.authService.login(req.user);
+    return new ResponseHelper().success(token);
   }
 
   @UseGuards(JwtAuthGuard)

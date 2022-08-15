@@ -21,12 +21,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err: any, user: any) {
+  handleRequest(err: any, user: any, info: any) {
     if (err || !user) {
       throw (
         err ||
         new UnauthorizedException(
-          1001,
+          1002,
           'Cần phải đăng nhập trước khi gọi request',
         )
       );
