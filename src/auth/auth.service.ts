@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AccountService } from 'src/modules/account/account.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
+import { NotFoundException } from 'src/common/exceptions/not_found.exception';
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,6 +18,28 @@ export class AuthService {
   }
 
   async login(user: any) {
+    const payload = { role: user.role, _id: user._id };
+    const refresh_token = await this.jwtService.sign(
+      { _id: user._id },
+      {
+        secret: process.env.JWT_SECRET_REFRESH,
+        expiresIn: process.env.JWT_EXPIRES_REFRESH,
+      },
+    );
+
+    // update rf token
+    await this.accountService.updateRefreshToken(user._id, refresh_token);
+    return {
+      access_token: this.jwtService.sign(payload),
+      refresh_token: refresh_token,
+    };
+  }
+
+  async refreshToken(token) {
+    const user = await this.accountService.findByRFToken(token);
+    if (!user) {
+      throw new NotFoundException(3006, 'Refresh token không hợp lệ');
+    }
     const payload = { role: user.role, _id: user._id };
     const refresh_token = await this.jwtService.sign(
       { _id: user._id },

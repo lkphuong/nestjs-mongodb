@@ -15,6 +15,10 @@ export class AccountService {
     return await this.accountRepository.findByID(id);
   }
 
+  async findByRFToken(token: string) {
+    return await this.accountRepository.findByRFToken(token);
+  }
+
   async create(createAccountDto: CreateAccountDto) {
     return await this.accountRepository.createAccount(createAccountDto);
   }

@@ -25,6 +25,10 @@ export class AccountRepository {
     return await this.accountModel.findById(id);
   }
 
+  async findByRFToken(rf_token: string) {
+    return await this.accountModel.findOne({ rf_token });
+  }
+
   async login(loginDto: LoginDto): Promise<any> {
     const account = await this.accountModel
       .findOne({ username: loginDto.username })
